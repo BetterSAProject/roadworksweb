@@ -1,0 +1,45 @@
+@use '../variables/index' as colors;
+@use '~@angular/material' as mat;
+
+@include mat.core();
+@include mat.strong-focus-indicators();
+
+$rw-primary: mat.define-palette(colors.$md-primrose, 500);
+$rw-accent: mat.define-palette(colors.$md-spunpearl, A400, A200, A700);
+
+$rw-light-theme: mat.define-light-theme((
+  color: (
+    primary: $rw-primary,
+    accent: $rw-accent
+  )
+));
+
+$rw-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $rw-primary,
+    accent: $rw-accent,
+  )
+));
+
+// Apply the dark theme by default
+@include mat.core-theme($rw-dark-theme);
+
+// Apply the light theme only when the `.rw-strong-focus` CSS class is applied
+// to an ancestor element of the components (such as `body`).
+.rw-strong-focus {
+  @include mat.all-component-themes($rw-dark-theme);
+  @include mat.strong-focus-indicators-theme($rw-dark-theme);
+}
+
+// Apply the light theme only when the `.rw-light-theme` CSS class is applied
+// to an ancestor element of the components (such as `body`).
+.rw-light-theme {
+  @include mat.core-color($rw-light-theme);
+
+  // Apply the light theme only when the `.rw-strong-focus` and `.rw-light-theme` CSS class is applied
+  // to an ancestor element of the components (such as `body`).
+  &.rw-strong-focus {
+    @include mat.all-component-themes($rw-light-theme);
+    @include mat.strong-focus-indicators-theme($rw-light-theme);
+  }
+}
